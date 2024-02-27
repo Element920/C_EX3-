@@ -69,9 +69,11 @@ StrList* Choice_one()
         wordsPtr += 1;
         token = strtok(NULL, " ");
     }
+
     free(input);
     return list;
 }
+
 
 
 
@@ -83,56 +85,72 @@ int main()
     StrList* list = NULL;
     while (choice != 0)
     {
-        //   printf("Enter 0 to exit the loop: ");
-        //         scanf("%d", &flag);
 
         printf("Please choose a number between 1-13 ");
-        char buffer[3];
-        fgets(buffer, 3, stdin);
+        char buffer[4];
+        fgets(buffer, 4, stdin);
         sscanf(buffer, "%d", &choice);
         printf("you chose option %d\n", choice);
         switch (choice)
         {
             case 1:
+            if (list != NULL) {
+                    printf("Warning: You already have a list. Creating a new list.\n");
+                    StrList_free(list);
+            }
                 list = Choice_one();
                 break;
+            
             case 2:
-                printf("Enter an index number");
-                scanf("%d", &index);
-                printf("Enter a String");
-                scanf("%s", data);
-                StrList_insertAt(list, data, index);
+               printf("Enter an index number: ");
+                index = input_number();
+
+                if (index >= 1 && index <= StrList_size(list) + 1) {
+                printf("Enter a String: ");
+                data = input_string();
+                 StrList_insertAt(list, data, index);
+            }                  
+            else {
+                printf("Invalid index. Please enter a valid index.\n");
+                }   
                 break;
+            
             case 3:
                 StrList_print(list);
                 break;
+            
             case 4:
                 printf("%zu", list->size);
                 break;
+            
             case 5:
-                printf("Enter an index number");
-                scanf("%d", &index);
+                printf("Enter an index number:\n");
+                index = input_number();
                 StrList_printAt(list, index);
                 break;
             
             case 6:
                 printf("%d", StrList_printLen(list));
                 break;
+            
             case 7:
-                printf("Enter a String");
-                scanf("%s", data);
-                StrList_count(list, data);
+                printf("Enter a string:\n");
+                data = input_string();
+                int countResult = StrList_count(list, data);
+                printf(" the number of occurences is %d\n", countResult);
                 break;
+            
             case 8:
-                printf("Enter a String");
-                scanf("%s", data);      
+                printf("Enter a String\n");
+                data = input_string();      
                 StrList_remove(list, data);
                 break;
+            
             case 9:
-                printf("Enter an index number");
-                scanf("%d", &index);
+                index = input_number();
                 StrList_removeAt(list, index);
                 break;
+            
             case 10:
                 StrList_reverse(list);
                 break;
@@ -144,8 +162,17 @@ int main()
             case 12:
                 StrList_sort(list);
                 break;
+           
             case 13:
-                StrList_isSorted(list);
+              if(StrList_isSorted(list)) 
+              {
+                printf("the list is sorted\n");
+              }
+               else 
+               {
+                printf("the list is not sorted\n");
+               }
+
                 break;
         }
     }
