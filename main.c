@@ -4,50 +4,61 @@
 #include "./StrList.h"
 #include <math.h>
 
-
+#define BUFFER_SIZE 100
 #define MAX_SIZE 2
 
 
 char *input_string()
 {
-
-    int num = 0;
-    int counter = 0;
-    char *str = malloc(sizeof(char) * (MAX_SIZE + 1));
-    char *addr = str;
-
-    while (1)
+    int initial_size = BUFFER_SIZE;
+    char *str = malloc(initial_size * sizeof(char));
+    if (str == NULL)
     {
-        if (counter == MAX_SIZE)
-        {
-            counter = 0;
-            char *new = malloc(sizeof(char) * (num + MAX_SIZE + 1));
-            strcpy(new, str);
-            free(str);
-            str = new;
-            addr = new + num;
-        }
-        char t;
-        scanf("%c", &t);
-        if (t == '\n')
-            break;
-        *addr = t;
-        addr += 1;
-        counter += 1;
-        num += 1;
+        return NULL;
     }
+
+    int i = 0;
+    char ch;
+
+    while ((ch = getchar()) != '\n' && ch != EOF)
+    {
+        if (i + 1 >= initial_size)
+        {
+            initial_size *= 2;
+            str = realloc(str, initial_size * sizeof(char));
+            if (str == NULL)
+            {
+                free(str);
+                return NULL;
+            }
+        }
+        str[i++] = ch;
+    }
+
+    str[i] = '\0';
+
+    str = realloc(str, (i + 1) * sizeof(char));
 
     return str;
 }
 
-
-int input_number() {
-    char buffer[100];
-    fgets(buffer, 100, stdin);
+int input_number()
+{
+    char buffer[BUFFER_SIZE];
+    fgets(buffer, BUFFER_SIZE, stdin);
     int number;
     sscanf(buffer, "%d", &number);
     return number;
 }
+
+
+// int input_number() {
+//     char buffer[100];
+//     fgets(buffer, 100, stdin);
+//     int number;
+//     sscanf(buffer, "%d", &number);
+//     return number;
+// }
 
 StrList* Choice_one()
 {
@@ -114,7 +125,7 @@ int main()
                 break;
             
             case 4:
-                printf("%zu", list->size);
+                printf("%zu\n", list->size);
                 break;
             
             case 5:
@@ -151,8 +162,10 @@ int main()
                 break;
     
             case 11:
-                StrList_free(list);
-                break;
+            if (list == NULL) break;
+            StrList_free(list);
+            list = NULL;
+            break;
             
             case 12:
                 StrList_sort(list);
@@ -161,18 +174,21 @@ int main()
             case 13:
               if(StrList_isSorted(list)) 
               {
-                printf("the list is sorted\n");
+                printf("true\n");
               }
                else 
                {
-                printf("the list is not sorted\n");
+                printf("false\n");
                }
 
                 break;
         }
     }
 
-    StrList_free(list);
+  if (list != NULL)
+    {
+        StrList_free(list);
+    }
 
     return 0;
 }
