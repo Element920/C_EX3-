@@ -32,29 +32,24 @@ size_t StrList_size(const StrList* StrList) {
 void StrList_insertLast(StrList* StrList, const char* data) {
     if (StrList == NULL || data == NULL) return;
 
-    // Allocate memory for a new string (including null terminator)
      char* newData = (char*)malloc(strlen(data) + 1);
 
-    // Check for allocation failure (NULL returned by strdup)
     if (newData == NULL) {
-        // Handle allocation failure (e.g., return or exit)
+        
         return;
     }
 
-    // Resize the array of pointers to accommodate the new string
+    
     StrList->data = (char**)realloc(StrList->data, (StrList->size + 1) * sizeof(char*));
 
-    // Check for reallocation failure (NULL returned by realloc)
+    
     if (StrList->data == NULL) {
-        // Handle reallocation failure (e.g., free allocated memory and return or exit)
         free(newData);
         return;
     }
 
-    // Assign the new string to the last position in the array
     StrList->data[StrList->size] = newData;
 
-    // Increment the size of the StrList
     ++StrList->size;
 }
 
@@ -103,8 +98,8 @@ int StrList_printLen(const StrList* StrList) {
 
     for (size_t i = 0; i < StrList->size; ++i) {
         totalLen += strlen(StrList->data[i]);
-    }
-
+    
+}
     return totalLen;
 }
 
@@ -189,7 +184,6 @@ StrList* StrList_clone(const StrList* StrList) {
             return NULL;
         }
 
-        // Insert the cloned string into the new StrList
         StrList_insertLast(newStrList, clonedString);
     }
 
