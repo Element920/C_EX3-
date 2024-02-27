@@ -104,15 +104,9 @@ int main()
             case 2:
                printf("Enter an index number: ");
                 index = input_number();
-
-                if (index >= 1 && index <= StrList_size(list) + 1) {
                 printf("Enter a String: ");
                 data = input_string();
-                 StrList_insertAt(list, data, index);
-            }                  
-            else {
-                printf("Invalid index. Please enter a valid index.\n");
-                }   
+                 StrList_insertAt(list, data, index);                
                 break;
             
             case 3:
@@ -147,6 +141,7 @@ int main()
                 break;
             
             case 9:
+                printf("Enter an index");
                 index = input_number();
                 StrList_removeAt(list, index);
                 break;
